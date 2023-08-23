@@ -1,0 +1,84 @@
+\documentclass[14pt]{extarticle}
+\usepackage{mathpazo}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[letterpaper, margin=0.5in]{geometry}
+\usepackage{minted}
+
+\renewcommand{\thesubsection}{\thesection.\alph{subsection}}
+
+\title{Homework 1}
+\author{Flynn Duniho}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{}
+
+\begin{itemize}
+  \item $f_7(n) = n^{\frac{1}{\log n}}$ - $\log(f_7(n)) = \log(n)*\frac{1}{\log(n)}=1$ constant time
+  \item $f_3(n) = n + 10$ - linear
+  \item $f_2(n) = \sqrt{2n}$ - polynomial ($\sqrt{2}*n^{\frac{1}{2}}$)
+  \item $f_6(n) = n^2\log n$ - see explanation below. This is also larger than $f_2$ because of the $n^2$ term
+  \item $f_1(n) = n^{2.5}$ - polynomial
+  \item $f_4(n) = 10^n$ - exponential
+  \item $f_5(n) = 10^{2n}$ - bigger exponential
+\end{itemize}
+
+\noindent
+Comparison between $f_1$ and $f_6$:\\
+\begin{align*}
+  \displaystyle
+  \lim_{n \to \infty} \frac{n^2\log n}{n^2*\sqrt n}
+  = \lim_{n \to \infty} \frac{\log n}{\sqrt n}
+  &= \lim_{n \to \infty} \frac{\log (\sqrt n)^2}{\sqrt n}
+  = \lim_{n \to \infty} \frac{2*\log \sqrt n}{\sqrt n}\\
+  \overset{m=\sqrt n}{=} \lim_{m \to \infty} \frac{2*\log m}{m}
+  &\le \lim_{m \to \infty} \frac{2*\ln m}{m} \\
+  \lim_{m \to \infty} \frac{2*\ln m}{m}
+  = 2*\lim_{m \to \infty} \frac{\ln m}{m}
+  &\overset{L}{=} 2*\lim_{m \to \infty} \frac{\frac{1}{m}}{1}
+  = 2*\lim_{m \to \infty} \frac{1}{m} = 0
+\end{align*}
+Since $\lim_{n \to \infty} \frac{n^2\log n}{n^2*\sqrt n} \le \lim_{m \to \infty} \frac{2*\ln m}{m}$ and $\lim_{m \to \infty} \frac{2*\ln m}{m} = 0$, \\
+we know that $\lim_{n \to \infty} \frac{n^2\log n}{n^2*\sqrt n} = 0$,\\
+therefore $O(f_6) < O(f_1)$.
+
+\section{}
+
+Given a graph G(V, E), assume S is a set of nodes that have not been visited. Pick an arbitrary node in S and use BFS to traverse the graph. Repeat BFS on another arbitrary node when BFS hits a dead-end. If BFS can get to a node that is already been traveled to in that iteration, then the graph has a directed cycle.\\
+
+Let us assume that the algorithm is incorrect.
+Let us also assume that the graph G(V, E) has a cycle in it. The algorithm will start at a node and continue to traverse the graph until there is nowhere left to go, or it comes across a node previously traveled to. If there is a cycle, BFS will always be able to get back to a node previously traveled to, using that path. Because of this, the algorithm will say that there is a cycle, which is a contradiction to our initial assumption. \\
+Now let us assume that there is no cycle in the graph G(V, E). If there is no cycle, the algorithm will not be able to go back to a node previously traveled to in that iteration, and will say that there is not a cycle, which is a contradiction to the assumption as well. \\
+Because of both of these contradictions, the algorithm is correct.
+
+\section{}
+
+Use Dijkstra's algorithm to find a path from s to u and v to t, then for t to u and v to s. Dijkstra's algorithm is $O(m+n)$, so this is $O(2(m+n))$.\\
+
+Let us assume that this algorithm is incorrect. This would mean that there is a shorter path between s and u, or v and t. For this to have happened, Dijkstra's algorithm would have had to have returned a path that is not the shortest path, which is impossible. Therefore this algorithm is correct.
+
+\section{}
+
+Create a node t that has all the same edges as s. Use a Dijkstra's algorithm to get from t to s. This is the shortest cycle. $O(m+n)$. \\
+This will always give the optimal result. Let us assume that there is a shorter path than the one given by the algorithm. This means that there is a cycle that has smaller sum than the output. However, this shorter path would have been discovered before the path that the algorithm actually gave, and the algorithm would have given that shorter path instead. This is a logical inconsistency, and therefore the algorithm is correct.
+
+\section{}
+
+depth-first search to traverse all vertices. Let T be the list of all vertices traveled to, in order of traversal. Then let S be every other vertex in T. That is, put the first item from T into S, and take the third item from T, and the fifth item, and so on. It is guaranteed for each vertex to have a neighbour that is not in S. $O(m+n)$, since this is a depth-first search.\\
+
+Let us assume that this algorithm is incorrect. The algorithm returns a set of nodes S. S is half the size of the graph G. For the nodes not in S to be not neighbours of a node inside S, this is impossible. If a node is not in S, this means it was a neighbour to a node in S. The way that the search works means that a node must be connected to another node before it in the list of traversed nodes. And if the parent node is not included in S, this means that the node itself will be in S. This produces a logical paradox, so the algorithm must be correct.
+
+% \begin{figure}[h]
+% \centering
+% \includegraphics[width=0.75\linewidth]{rings.png}
+% \caption{Rings}
+% \end{figure}
+
+\end{document}

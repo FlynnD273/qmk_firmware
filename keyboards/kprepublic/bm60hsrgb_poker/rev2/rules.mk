@@ -1,8 +1,12 @@
 # Build Options
 #   change yes to no to disable
 #
+TAP_DANCE_ENABLE = yes
+# UNICODE_ENABLE = yes
+# UNICODEMAP_ENABLE = yes
+COMBO_ENABLE = yes
 BOOTMAGIC_ENABLE = yes      # Enable Bootmagic Lite
-MOUSEKEY_ENABLE = yes       # Mouse keys
+MOUSEKEY_ENABLE = no       # Mouse keys
 EXTRAKEY_ENABLE = yes       # Audio control and System control
 CONSOLE_ENABLE = no         # Console for debug
 COMMAND_ENABLE = no         # Commands for debug and configuration
