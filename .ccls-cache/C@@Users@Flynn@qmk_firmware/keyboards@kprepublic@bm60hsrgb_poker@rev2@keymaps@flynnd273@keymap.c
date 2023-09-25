@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 
+#define COMBO_COUNT 1
+
 bool override_color = false;
 
 enum layers {
@@ -16,6 +18,7 @@ enum layers {
 enum custom_keycodes {
     XX_DELL = SAFE_RANGE,
     XX_GREY,
+    XX_TERM,
 };
 
 enum combo_events {
@@ -75,6 +78,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_C);
                 SEND_STRING(SS_UP(X_LCTL));
                 SEND_STRING(SS_UP(X_LGUI));
+                return false;
+            }
+            break;
+        case XX_TERM:
+            if (record-> event.pressed) {
+                register_code(KC_LGUI);
+                tap_code(KC_R);
+                unregister_code(KC_LGUI);
+                _delay_ms(250);
+                SEND_STRING("wt");
+                _delay_ms(250);
+                tap_code(KC_ENTER);
                 return false;
             }
             break;
@@ -172,9 +187,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [L_FNL] = LAYOUT_60_ansi(
         KC_GRV,   KC_F1,    KC_F2,      KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,    KC_F11,    KC_F12,      KC_DEL,
-        KC_LGUI,    XXXXXXX,  XXXXXXX,    XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_HOME,  XXXXXXX,  KC_END,   KC_PSCR,   XXXXXXX,   XXXXXXX,  XXXXXXX,
+        KC_LGUI,    XXXXXXX,    XXXXXXX,  XXXXXXX,  G(KC_R),  XX_TERM,  XXXXXXX,  KC_HOME,  XXXXXXX,  KC_END,   KC_PSCR,   XXXXXXX,   XXXXXXX,  XXXXXXX,
         TO(L_SET),    KC_MPRV,  KC_MPLY,    KC_MNXT,  XXXXXXX,  XXXXXXX,  KC_LEFT,  KC_DOWN,  KC_UP,    KC_RIGHT, XXXXXXX,   XXXXXXX,            _______,
-        KC_LSFT,        KC_VOLD,  KC_VOLU,    KC_MUTE,  KC_F13,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                    KC_RSFT,
+        KC_LSFT,        KC_VOLD,  KC_VOLU,    KC_MUTE,  G(KC_V),  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,                    KC_RSFT,
         KC_LCTL, XXXXXXX,  KC_LALT,                               G(KC_UP),                               KC_RALT,   KC_LGUI,          TO(L_DEF),  KC_RCTL
         ),
 
