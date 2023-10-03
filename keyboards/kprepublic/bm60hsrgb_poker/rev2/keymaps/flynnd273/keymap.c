@@ -117,7 +117,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 tap_code(KC_R);
                 unregister_code(KC_LGUI);
                 _delay_ms(250);
-                SEND_STRING("wt");
+                SEND_STRING("wezterm-gui.exe");
                 _delay_ms(250);
                 tap_code(KC_ENTER);
                 return false;
